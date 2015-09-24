@@ -14,8 +14,8 @@ apply plugin: 'com.bmuschko.tomcat'
 
 group = 'org.gradle.training'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -40,4 +40,8 @@ dependencies {
 
 tomcat {
     contextPath = 'sample-app'
+}
+
+test {
+    maxParallelForks=4
 }
