@@ -23,6 +23,7 @@ public class JsonGradlePluginsApiParserTest {
         assertEquals("java.util.concurrent.TimeoutException", summary.getExceptionMessage());
     }
 
+    @org.junit.Ignore
     @Test(expected = ApiParserException.class)
     public void parseInvalidJson() {
         parser.parseSummary("{ hello }");
