@@ -1,3 +1,7 @@
+import org.gradle.sample.ProjectVersion
+
+version=new ProjectVersion(1,2,3)
+
 buildscript {
     repositories {
         jcenter()
@@ -12,10 +16,17 @@ apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'com.bmuschko.tomcat'
 
+apply from: "$rootDir/gradle/integration-test.gradle"
+apply from: "$rootDir/gradle/findbugs.gradle"
+apply from: "$rootDir/gradle/coverage.gradle"
+apply from: "$rootDir/gradle/publish.gradle"
+
+
+
 group = 'org.gradle.training'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
@@ -32,6 +43,7 @@ dependencies {
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.8'
 
+
     def tomcatVersion = '7.0.62'
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
@@ -44,4 +56,10 @@ tomcat {
 
 test {
     maxParallelForks=4
+    
+    reports {
+      junitXml.destination = file("${buildDir}/test-results/unit")
+    }
 }
+
+

@@ -1,0 +1,27 @@
+
+sourceSets {   
+  integrationTest {       
+    java.srcDir file('src/integTest/java')
+    resources.srcDir file('src/integTest/resources')
+    compileClasspath += sourceSets.main.output + configurations.testRuntime
+    runtimeClasspath += output + compileClasspath
+    
+  }
+}
+
+dependencies {
+  integrationTestCompile 'org.springframework:spring-test:4.1.1.RELEASE'
+}
+
+task integrationTest(type: Test) {
+  mustRunAfter test
+  testClassesDir = sourceSets.integrationTest.output.classesDir
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  reports {
+    junitXml.destination = file("${buildDir}/test-results/integration")
+  }
+}
+
+check {
+    dependsOn integrationTest
+}

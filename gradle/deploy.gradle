@@ -1,0 +1,29 @@
+buildscript {
+  dependencies {
+    classpath 'org.hidetake:gradle-ssh-plugin:0.4.5'
+  }
+}
+
+apply plugin: 'org.hidetake.ssh'
+
+remotes {
+  webServer {
+    host = '192.168.1.33'
+    user = 'tomcat'
+    identity = file('id_rsa')
+  }
+}
+
+task deploy {
+  doLast {
+    ssh.run {
+      session(remotes.webServer) {
+        put 'example.war', '/webapps'
+        execute 'sudo service tomcat stop'
+      }
+    }
+    ssh.settings {
+        knownHosts = allowAnyHosts
+    }
+  }
+}

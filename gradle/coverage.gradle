@@ -1,0 +1,31 @@
+apply plugin: 'jacoco'
+
+test {
+  jacoco {
+    enabled = Boolean.valueOf(System.getProperty('jacocoEnabled', 'false'))
+  }
+}
+
+tasks.withType(Test) {
+  jacoco {
+    // enabled=project.hasProperty("codeCoverageEnabled")
+  }
+}
+
+jacocoTestReport {
+  reports {
+    csv.enabled false
+    xml.enabled true
+    xml.destination "${buildDir}/test-results/jacoco"
+    html.destination "${buildDir}/reports/jacoco"
+  }
+}
+
+task jacocoIntegrationTestReport(type: JacocoReport) {
+  executionData integrationTest
+  sourceSets sourceSets.main
+  
+  reports {
+    html.destination file("${buildDir}/reports/jacocoIntegration")
+  }
+}
